@@ -14,7 +14,7 @@ namespace Shooter
     {
         public Texture2D texture; // Image
         public Vector2 position;
-        public float speed;
+        public Vector2 speed;
         public int damage;
 
         //Colision Variables
@@ -26,7 +26,8 @@ namespace Shooter
         {
             this.damage = 20;
             this.texture = newTexture;
-            this.speed = 20;
+            this.speed.Y = -20;
+            this.speed.X = 0;
             this.isVisible = false;
 
         }
@@ -39,7 +40,8 @@ namespace Shooter
         // Update 
         public void Update(GameTime gameTime) {
             //Update Position
-            position.Y = position.Y - speed;
+            position.Y = position.Y + speed.Y;
+            position.X = position.X + speed.X;
 
             //Update Bounding Box
             boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
