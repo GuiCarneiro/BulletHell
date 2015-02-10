@@ -38,9 +38,6 @@ namespace Shooter.Level
 
             starField.Update(gameTime);
 
-            UpdateAsteroids(gameTime);
-            LoadAsteroids(gameTime, content);
-
             UpdateEnemies(gameTime);
             LoadEnemies(gameTime, content);
 
@@ -87,7 +84,7 @@ namespace Shooter.Level
             particleEngine.Draw(spriteBatch);
         }
 
-        private void LoadAsteroids(GameTime gameTime, ContentManager content)
+        private void LoadEnemies(GameTime gameTime, ContentManager content)
         {
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -98,11 +95,11 @@ namespace Shooter.Level
                 {
                     Asteroid asteroid = new Asteroid(1);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
 
                     asteroid = new Asteroid(2);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
                     elapsedTime = 0;
                 }
             }
@@ -114,53 +111,15 @@ namespace Shooter.Level
                 {
                     Asteroid asteroid = new Asteroid(3);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
 
                     asteroid = new Asteroid(4);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
                     elapsedTime = 0;
                 }
             }
 
-
-        }
-
-        private void UpdateAsteroids(GameTime gameTime)
-        {
-
-            for (int i = 0; i < asteroids.Count(); i++)
-            {
-                asteroids[i].Update(gameTime);
-                if (asteroids[i].boundingBox.Intersects(p1.boundingBox))
-                {
-                    asteroids[i].isVisible = false;
-                    p1.health = p1.health - 20;
-                }
-
-                foreach (Bullet b in p1.bulletList)
-                {
-                    if (b.boundingBox.Intersects(asteroids[i].boundingBox))
-                    {
-                        b.isVisible = false;
-                        asteroids[i].isVisible = false;
-                        particleEngine.BurstParticle(new Vector2(asteroids[i].position.X, asteroids[i].position.Y), size: 100, variationY: -5);
-                        hud.score = hud.score + 5;
-                    }
-                }
-
-
-                if (!asteroids[i].isVisible)
-                {
-                    asteroids.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-
-        private void LoadEnemies(GameTime gameTime, ContentManager content)
-        {
-            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
 
             // First Enemy Wave
             if (timeInGame > 8 && timeInGame < 9)
@@ -263,12 +222,14 @@ namespace Shooter.Level
             }
         }
 
-
+        // Method responsable for checking any kind of Colision
         private void UpdateEnemies(GameTime gameTime)
         {
             for (int i = 0; i < enemies.Count(); i++)
             {
                 enemies[i].Update(gameTime);
+                
+                // Colision between enemy and player
                 if (enemies[i].boundingBox.Intersects(p1.boundingBox))
                 {
                     enemies[i].isVisible = false;
@@ -277,17 +238,17 @@ namespace Shooter.Level
 
                 foreach (Bullet b in p1.bulletList)
                 {
+                    // Colision between bullet and enemy
                     if (b.boundingBox.Intersects(enemies[i].boundingBox))
                     {
                         b.isVisible = false;
                         if (enemies[i].Damaged(b.damage))
                         {
                             enemies[i].isVisible = false;
-                            hud.score = hud.score + 5;
                             if (enemies[i].health == 0)
                             {
                                 particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
-                                hud.score = hud.score + 10;
+                                hud.score = hud.score + enemies[i].points;
                             }
                         }
                     }
@@ -295,6 +256,7 @@ namespace Shooter.Level
 
                 foreach (Bullet b in enemies[i].bulletList)
                 {
+                    // Colision between enemy's bullet and player
                     if (b.boundingBox.Intersects(p1.boundingBox))
                     {
                         b.isVisible = false;
@@ -302,7 +264,7 @@ namespace Shooter.Level
                     }
                 }
 
-
+                // Delete any invisible enemy
                 if (!enemies[i].isVisible)
                 {
                     List<EnemyBullet> bullets = null;
@@ -313,6 +275,8 @@ namespace Shooter.Level
 
                     enemies.RemoveAt(i);
 
+                    // Transfer bullets from a dead enemy to another
+                    // This way we don't have bullet disapearing just because one enemy is dead
                     if (bullets != null)
                     {
                         foreach (EnemyBullet b in bullets) { enemies[0].bulletList.Add(b); }
