@@ -6,15 +6,18 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using Shooter.Bosses.Bullets;
 
 namespace Shooter.Bosses
 {
     public abstract class Boss
     {
         public Texture2D texture, bulletTexture1, bulletTexture2, bulletTexture3;
+
         public Vector2 position, speed;
-        public int pattern;
-        //public List<BossBullet> bulletList;
+
+        public int bulletPattern1, bulletPattern2, bulletPattern3;
+        public List<BossBullet> bulletList;
         public int health;
         public int timeOfShoot;
         public double timeCounter;
@@ -24,7 +27,7 @@ namespace Shooter.Bosses
         public bool isVisible;
 
          // Constructor
-        public Boss()
+        public Boss(int bp1, int bp2, int bp3)
         {
             this.health = 1000;
             //this.bulletList = new List<BossBullet>();
@@ -35,14 +38,18 @@ namespace Shooter.Bosses
             this.bulletTexture2 = null;
             this.bulletTexture3 = null;
 
+            this.bulletPattern1 = bp1;
+            this.bulletPattern2 = bp3;
+            this.bulletPattern3 = bp2;
+
             this.isVisible = true;            
         }
 
         // Draw
         public void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(texture, position, Color.White);
-           // foreach (EnemyBullet b in bulletList)
-           //     b.Draw(spriteBatch);
+           foreach (BossBullet b in bulletList)
+               b.Draw(spriteBatch);
         }
 
         // Load Content
@@ -55,12 +62,13 @@ namespace Shooter.Bosses
         public void Update(GameTime gameTime)
         {
             boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
-            //speed = PatternsEnemies.patternSpeed(pattern, position, speed);
-            //position.Y = position.Y + speed.Y;
-            //position.X = position.X + speed.X;
+            
+            position.Y = position.Y + (float) 0.1;
 
             if (position.Y > Globals.GameHeight + texture.Height) { isVisible = false; }
+
             if (position.X > Globals.GameWidth + texture.Width) { isVisible = false; }
+
             if (position.X < 0 - texture.Width) { isVisible = false; }
         }
 

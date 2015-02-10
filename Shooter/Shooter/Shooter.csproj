@@ -85,6 +85,8 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bosses\Bullets\BossBullet.cs" />
+    <Compile Include="Bosses\Bullets\BossBulletPatterns.cs" />
     <Compile Include="Enemies\Asteroid.cs" />
     <Compile Include="Bosses\Boss.cs" />
     <Compile Include="Bullet.cs" />
