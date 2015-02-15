@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Shooter.Enemies;
 using Shooter.Engines.Particle;
+using Shooter.Bosses;
 
 namespace Shooter.Level
 {
@@ -21,6 +22,7 @@ namespace Shooter.Level
         List<Bullet> bullets = new List<Bullet>();
         IList<Enemy> enemies = new List<Enemy>();
         StarField starField = new StarField();
+        Boss1 boss = new Boss1(0,0,0);
         double timeInGame = 0;
         ParticleEngine particleEngine;
         HUD hud = new HUD();
@@ -38,17 +40,17 @@ namespace Shooter.Level
 
             starField.Update(gameTime);
 
-            UpdateAsteroids(gameTime);
-            LoadAsteroids(gameTime, content);
-
             UpdateEnemies(gameTime);
             LoadEnemies(gameTime, content);
 
             p1.Update(gameTime);
 
+            UpdateBoss(gameTime);
+
             particleEngine.Update();
 
             hud.Update(gameTime);
+
         }
 
         public void LoadContent(ContentManager content)
@@ -64,6 +66,7 @@ namespace Shooter.Level
             hud.LoadContent(content);
 
             p1.LoadContent(content);
+            if (boss.isVisible) boss.LoadContent(content);
 
         }
 
@@ -83,26 +86,32 @@ namespace Shooter.Level
                 enemy.Draw(spriteBatch);
 
             p1.Draw(spriteBatch);
+
+            if (boss.isVisible)
+            {
+                boss.Draw(spriteBatch);
+            }
             hud.Draw(spriteBatch);
             particleEngine.Draw(spriteBatch);
+
         }
 
-        private void LoadAsteroids(GameTime gameTime, ContentManager content)
+        private void LoadEnemies(GameTime gameTime, ContentManager content)
         {
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-
             // First diagonal asteroids
+
             if (timeInGame > 3 && timeInGame < 5)
             {
                 if (elapsedTime > 0.2)
                 {
                     Asteroid asteroid = new Asteroid(1);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
 
                     asteroid = new Asteroid(2);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
                     elapsedTime = 0;
                 }
             }
@@ -114,53 +123,14 @@ namespace Shooter.Level
                 {
                     Asteroid asteroid = new Asteroid(3);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
 
                     asteroid = new Asteroid(4);
                     asteroid.LoadContent(content);
-                    asteroids.Add(asteroid);
+                    enemies.Add(asteroid);
                     elapsedTime = 0;
                 }
             }
-
-
-        }
-
-        private void UpdateAsteroids(GameTime gameTime)
-        {
-
-            for (int i = 0; i < asteroids.Count(); i++)
-            {
-                asteroids[i].Update(gameTime);
-                if (asteroids[i].boundingBox.Intersects(p1.boundingBox))
-                {
-                    asteroids[i].isVisible = false;
-                    p1.health = p1.health - 20;
-                }
-
-                foreach (Bullet b in p1.bulletList)
-                {
-                    if (b.boundingBox.Intersects(asteroids[i].boundingBox))
-                    {
-                        b.isVisible = false;
-                        asteroids[i].isVisible = false;
-                        particleEngine.BurstParticle(new Vector2(asteroids[i].position.X, asteroids[i].position.Y), size: 100, variationY: -5);
-                        hud.score = hud.score + 5;
-                    }
-                }
-
-
-                if (!asteroids[i].isVisible)
-                {
-                    asteroids.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-
-        private void LoadEnemies(GameTime gameTime, ContentManager content)
-        {
-            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
 
             // First Enemy Wave
             if (timeInGame > 8 && timeInGame < 9)
@@ -255,12 +225,13 @@ namespace Shooter.Level
                     elapsedTime = 0;
                 }
             }
-
             // Second Enemy Wave
             if (timeInGame >20 && timeInGame < 21)
             {
                 hud.warning.Activate();
             }
+
+
         }
 
 
@@ -323,5 +294,33 @@ namespace Shooter.Level
         }
 
 
+        private void UpdateBoss(GameTime gameTime)
+        {
+            if (timeInGame > 21)
+            {
+                boss.Update(gameTime);
+            }
+                if (boss.boundingBox.Intersects(p1.boundingBox))
+                {
+                    p1.health = 0;
+                }
+
+                foreach (Bullet b in p1.bulletList)
+                {
+                    if (b.boundingBox.Intersects(boss.boundingBox))
+                    {
+                        b.isVisible = false;
+                        if (boss.Damaged(b.damage))
+                        {
+                            if (boss.health == 0)
+                            {
+                                boss.isVisible = false;
+                                particleEngine.BurstParticle(new Vector2(boss.position.X + boss.texture.Width / 2, boss.position.Y + boss.texture.Height / 2), size: 500, extraTime: 240, intensity: 3);
+                                hud.score = hud.score + boss.score;
+                            }
+                        }
+                    }
+                }
+        }
     }
 }

@@ -20,13 +20,13 @@ namespace Shooter.Engines.Particle
             random = new Random();
         }
 
-        private Particle GenerateNewParticle(Color nColor, Vector2 location, int minTTL = 20, int variationX = 0, int variationY = 0)
+        private Particle GenerateNewParticle(Color nColor, Vector2 location, int minTTL = 20, int variationX = 0, int variationY = 0, int intensity = 1)
         {
             Texture2D texture = textures[random.Next(textures.Count)];
             Vector2 position = location;
             Vector2 velocity = new Vector2(
-                    1f * (float)(random.NextDouble() * 2 - 1) + variationX,
-                    1f * (float)(random.NextDouble() * 2 - 1) + variationY);
+                    1f * (float)(intensity * random.NextDouble() * 2 - 1) + variationX,
+                    1f * (float)(intensity * random.NextDouble() * 2 - 1) + variationY);
             float angle = 0;
             float angularVelocity = 0.1f * (float)(random.NextDouble() * 2 - 1);
             Color color = nColor;
@@ -36,11 +36,11 @@ namespace Shooter.Engines.Particle
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
         }
 
-        public void BurstParticle(Vector2 location, int size = 15, int extraTime = 0, int variationX = 0, int variationY = 0)
+        public void BurstParticle(Vector2 location, int size = 15, int extraTime = 0, int variationX = 0, int variationY = 0, int intensity = 1)
         {
             for (int i = 0; i < size; i++)
             {
-                particles.Add(GenerateNewParticle(Color.White, location, extraTime, variationX, variationY));
+                particles.Add(GenerateNewParticle(Color.White, location, extraTime, variationX, variationY, intensity));
             }
         }
 

@@ -17,10 +17,12 @@ namespace Shooter.Bosses
         public Vector2 position, speed;
 
         public int bulletPattern1, bulletPattern2, bulletPattern3;
+
         public List<BossBullet> bulletList;
         public int health;
         public int timeOfShoot;
         public double timeCounter;
+        public int score;
 
         //Colision Variables
         public Rectangle boundingBox;
@@ -30,7 +32,7 @@ namespace Shooter.Bosses
         public Boss(int bp1, int bp2, int bp3)
         {
             this.health = 1000;
-            //this.bulletList = new List<BossBullet>();
+            this.bulletList = new List<BossBullet>();
             this.texture = null;
 
             //All three states of bullets
@@ -46,7 +48,8 @@ namespace Shooter.Bosses
         }
 
         // Draw
-        public void Draw(SpriteBatch spriteBatch) {
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
             spriteBatch.Draw(texture, position, Color.White);
            foreach (BossBullet b in bulletList)
                b.Draw(spriteBatch);
@@ -59,7 +62,7 @@ namespace Shooter.Bosses
 
 
         // Update 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             

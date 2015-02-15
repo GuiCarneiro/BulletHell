@@ -216,43 +216,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bullets\BlueBlast__001.png">
-      <Name>BlueBlast__001</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Bullets\BlueScale__003.png">
-      <Name>BlueScale__003</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Bullets\BlueSpin__000.png">
-      <Name>BlueSpin__000</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Bullets\BlueTail__000.png">
-      <Name>BlueTail__000</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Bullets\OrangeBlast__001.png">
-      <Name>OrangeBlast__001</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Bullets\OrangeScale__002.png">
-      <Name>OrangeScale__002</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Bullets\OrangeTail__000.png">
-      <Name>OrangeTail__000</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Player\Ships\Player1-0.png">
       <Name>Player1-0</Name>
       <Importer>TextureImporter</Importer>
@@ -380,6 +343,30 @@
   <ItemGroup>
     <Compile Include="HelpMenu\Keyboard.png">
       <Name>Keyboard</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bullets\OrangeBlast.png">
+      <Name>OrangeBlast</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Bullets\OrangeScale.png">
+      <Name>OrangeScale</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Bullets\OrangeTail.png">
+      <Name>OrangeTail</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bullets\BlueScale.png">
+      <Name>BlueScale</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
