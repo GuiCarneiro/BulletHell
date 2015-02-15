@@ -98,6 +98,7 @@
     <Compile Include="Enemies\EnemyRed1.cs" />
     <Compile Include="Enemies\EnemyRed2.cs" />
     <Compile Include="Enemies\EnemyBullet.cs" />
+    <Compile Include="Engines\Graphical\Graphical.cs" />
     <Compile Include="Engines\PatternsBosses.cs" />
     <Compile Include="Engines\Input\Input.cs" />
     <Compile Include="Engines\Particle\Particle.cs" />

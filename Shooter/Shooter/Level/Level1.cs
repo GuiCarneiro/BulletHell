@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using Shooter.Enemies;
 using Shooter.Engines.Particle;
 using Shooter.Bosses;
+using Shooter.Engines.Graphical;
 
 namespace Shooter.Level
 {
@@ -302,22 +303,27 @@ namespace Shooter.Level
             }
                 if (boss.boundingBox.Intersects(p1.boundingBox))
                 {
-                    p1.health = 0;
+                    if (Graphical.IntersectsPixelPerPixel(p1.texture, p1.boundingBox, boss.texture, boss.boundingBox))
+                        p1.health = 0;
                 }
 
                 foreach (Bullet b in p1.bulletList)
                 {
                     if (b.boundingBox.Intersects(boss.boundingBox))
                     {
-                        b.isVisible = false;
-                        if (boss.Damaged(b.damage))
+                        if (Graphical.IntersectsPixelPerPixel(b.texture, b.boundingBox, boss.texture, boss.boundingBox))
                         {
-                            if (boss.health == 0)
+                            b.isVisible = false;
+                            if (boss.Damaged(b.damage))
                             {
-                                boss.isVisible = false;
-                                particleEngine.BurstParticle(new Vector2(boss.position.X + boss.texture.Width / 2, boss.position.Y + boss.texture.Height / 2), size: 500, extraTime: 240, intensity: 3);
-                                hud.score = hud.score + boss.score;
+                                if (boss.health == 0)
+                                {
+                                    boss.isVisible = false;
+                                    particleEngine.BurstParticle(new Vector2(boss.position.X + boss.texture.Width / 2, boss.position.Y + boss.texture.Height / 2), size: 500, extraTime: 240, intensity: 3);
+                                    hud.score = hud.score + boss.score;
+                                }
                             }
+
                         }
                     }
                 }

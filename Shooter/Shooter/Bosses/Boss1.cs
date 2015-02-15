@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Shooter.Bosses.Bullets;
 using Shooter.Engines;
+using Shooter.Engines.Graphical;
 
 
 namespace Shooter.Bosses
@@ -75,7 +76,7 @@ namespace Shooter.Bosses
         {
             Rectangle movingPosition = movingPattern.Peek(); 
             Rectangle tmp;
-            double degrees = Globals.AngleBetween(position, movingPosition);
+            double degrees = Graphical.AngleBetween(position, movingPosition);
 
             Vector2 center = new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2);
 

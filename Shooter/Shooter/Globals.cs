@@ -33,26 +33,5 @@ namespace Shooter
         {
             get { return Globals.windowHeight; }
         }
-
-        public static double AngleBetween(Vector2 vector1, Vector2 vector2)
-        {
-            float angle = (float)Math.Atan2(vector2.Y - vector1.Y, vector2.X - vector1.X);
-            return MathHelper.ToDegrees(angle);
-        }
-
-        public static double AngleBetween(Rectangle vector1, Rectangle vector2)
-        {
-            return AngleBetween(new Vector2(vector1.X, vector1.Y), new Vector2(vector2.X, vector2.Y));
-        }
-
-        public static double AngleBetween(Vector2 vector1, Rectangle vector2)
-        {
-            return AngleBetween(vector1, new Vector2(vector2.X, vector2.Y));
-        }
-
-        public static double AngleBetween(Rectangle vector1, Vector2 vector2)
-        {
-            return AngleBetween(new Vector2(vector1.X, vector1.Y), vector2);
-        }
     }
 }
