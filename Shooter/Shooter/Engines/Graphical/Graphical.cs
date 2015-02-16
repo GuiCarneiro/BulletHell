@@ -35,6 +35,15 @@ namespace Shooter.Engines.Graphical
             return AngleBetween(new Vector2(vector1.X, vector1.Y), vector2);
         }
 
+        public static Vector2 AngleSpeed(double angle, double speed)
+        {
+            Vector2 nSpeed = new Vector2();
+            nSpeed.Y = (float)(Math.Sin(Math.PI * angle / 180.0) * speed);
+            nSpeed.X = (float)(Math.Cos(Math.PI * angle / 180.0) * speed);
+
+            return nSpeed;
+        }
+
         // Method to read pixel by pixel
         // Return if contacts or not
 

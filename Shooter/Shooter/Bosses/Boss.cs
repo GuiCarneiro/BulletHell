@@ -14,6 +14,12 @@ namespace Shooter.Bosses
     {
         public Texture2D texture, bulletTexture1, bulletTexture2, bulletTexture3;
 
+        public Texture2D healthMid, healthBottom, healthTop; // Life images, center and its borders
+
+        public Rectangle healthRectangle;
+
+        public int initialLife, initialHeight, healthAnimation;
+
         public Vector2 position, speed;
 
         public int bulletPattern1, bulletPattern2, bulletPattern3;

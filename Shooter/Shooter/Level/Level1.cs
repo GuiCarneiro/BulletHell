@@ -46,7 +46,8 @@ namespace Shooter.Level
 
             p1.Update(gameTime);
 
-            UpdateBoss(gameTime);
+            if(boss.isVisible)
+                UpdateBoss(gameTime);
 
             particleEngine.Update();
 

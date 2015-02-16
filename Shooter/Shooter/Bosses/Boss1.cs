@@ -35,9 +35,13 @@ namespace Shooter.Bosses
             this.bulletPattern3 = bp2;
 
             this.isVisible = true;
-            movingPattern = PatternsBosses.movingPattern(2);
+            movingPattern = PatternsBosses.movingPattern(1);
 
             this.score = 500;
+
+            this.initialLife = 2000;
+            this.initialHeight = 1300;
+            this.healthAnimation = 270;
         }
 
         // Draw
@@ -46,6 +50,15 @@ namespace Shooter.Bosses
            spriteBatch.Draw(texture, position, Color.White);
            foreach (BossBullet b in bulletList)
                b.Draw(spriteBatch);
+
+           //If Life > 0 than draw life bar
+           if (health > 0)
+           {
+               spriteBatch.Draw(healthTop, new Rectangle(healthRectangle.X, healthRectangle.Y - healthTop.Height, healthRectangle.Width, healthTop.Height), Color.White);
+               spriteBatch.Draw(healthMid, healthRectangle, Color.White);
+               spriteBatch.Draw(healthBottom, new Rectangle(healthRectangle.X, healthRectangle.Y + healthRectangle.Height, healthRectangle.Width, healthBottom.Height), Color.White);
+           }
+
         }
 
         // Load Content
@@ -55,6 +68,11 @@ namespace Shooter.Bosses
             bulletTexture1 = content.Load<Texture2D>("Bullets/OrangeBlast"); //Straight
             bulletTexture2 = content.Load<Texture2D>("Bullets/OrangeScale"); //Homing
             bulletTexture3 = content.Load<Texture2D>("Bullets/OrangeTail");  //Spread
+
+
+            healthMid = content.Load<Texture2D>("HUD/bar_red_mid");
+            healthTop = content.Load<Texture2D>("HUD/bar_red_top");
+            healthBottom = content.Load<Texture2D>("HUD/bar_red_bottom");
         }
 
 
@@ -70,6 +88,11 @@ namespace Shooter.Bosses
             if (position.X > Globals.GameWidth + texture.Width) { isVisible = false; }
 
             if (position.X < 0 - texture.Width) { isVisible = false; }
+
+            healthRectangle = new Rectangle(Globals.GameWidth - 40 + healthAnimation, 35, 20, (health * initialHeight) / initialLife);
+
+            if (healthAnimation != 0)
+                healthAnimation--;
         }
 
         public void Move(GameTime gameTime)
@@ -78,10 +101,10 @@ namespace Shooter.Bosses
             Rectangle tmp;
             double degrees = Graphical.AngleBetween(position, movingPosition);
 
-            Vector2 center = new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2);
+            Vector2 speed = Graphical.AngleSpeed(degrees, 3);
 
-            position.Y = (float)(position.Y + Math.Sin(Math.PI * degrees / 180.0) * 3); 
-            position.X = (float)(position.X + Math.Cos(Math.PI * degrees / 180.0) * 3);
+            position.Y = position.Y + speed.Y; 
+            position.X = position.X + speed.X;
 
             if (movingPosition.Intersects(this.boundingBox))
             {
