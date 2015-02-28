@@ -23,7 +23,7 @@ namespace Shooter.Level
         List<Bullet> bullets = new List<Bullet>();
         IList<Enemy> enemies = new List<Enemy>();
         StarField starField = new StarField();
-        Boss1 boss = new Boss1(0,0,0);
+        Boss1 boss = new Boss1();
         double timeInGame = 0;
         ParticleEngine particleEngine;
         HUD hud = new HUD();
@@ -87,12 +87,13 @@ namespace Shooter.Level
             foreach (Enemy enemy in enemies)
                 enemy.Draw(spriteBatch);
 
-            p1.Draw(spriteBatch);
 
             if (boss.isVisible)
             {
                 boss.Draw(spriteBatch);
             }
+
+            p1.Draw(spriteBatch);
             hud.Draw(spriteBatch);
             particleEngine.Draw(spriteBatch);
 
@@ -320,7 +321,9 @@ namespace Shooter.Level
                                 if (boss.health == 0)
                                 {
                                     boss.isVisible = false;
-                                    particleEngine.BurstParticle(new Vector2(boss.position.X + boss.texture.Width / 2, boss.position.Y + boss.texture.Height / 2), size: 500, extraTime: 240, intensity: 3);
+                                    particleEngine.BurstParticle(new Vector2(0, 0), size: 6000, extraTime: 180, intensity: 15);
+                                    particleEngine.BurstParticle(new Vector2(Globals.GameWidth, Globals.GameHeight), size: 6000, extraTime: 180, intensity: -15);
+                                    
                                     hud.score = hud.score + boss.score;
                                 }
                             }

@@ -35,13 +35,13 @@ namespace Shooter.Engines.Graphical
             return AngleBetween(new Vector2(vector1.X, vector1.Y), vector2);
         }
 
-        public static Vector2 AngleSpeed(double angle, double speed)
+        public static Vector2 PolarToCartesian(double angle, double intesity)
         {
-            Vector2 nSpeed = new Vector2();
-            nSpeed.Y = (float)(Math.Sin(Math.PI * angle / 180.0) * speed);
-            nSpeed.X = (float)(Math.Cos(Math.PI * angle / 180.0) * speed);
+            Vector2 nIntesity = new Vector2();
+            nIntesity.Y = (float)(Math.Sin(Math.PI * angle / 180.0) * intesity);
+            nIntesity.X = (float)(Math.Cos(Math.PI * angle / 180.0) * intesity);
 
-            return nSpeed;
+            return nIntesity;
         }
 
         // Method to read pixel by pixel

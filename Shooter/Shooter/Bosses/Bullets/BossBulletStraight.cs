@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Shooter.Bosses.Bullets
 {
-    public abstract class BossBullet
+    public abstract class BossBulletStraight
     {
         public Texture2D texture; // Image
         public Vector2 position;
@@ -21,7 +21,7 @@ namespace Shooter.Bosses.Bullets
         public bool isVisible;
 
         // Constructor
-        public BossBullet(Texture2D newTexture)
+        public BossBulletStraight(Texture2D newTexture)
         {
             this.damage = 10;
             this.texture = newTexture;

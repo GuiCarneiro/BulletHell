@@ -106,11 +106,6 @@ namespace Shooter
                 {
                     bulletList.RemoveAt(i);
                     i--;
-
-                    if (bulletList.Count() == 0)
-                    {
-                        bulletDelay = 0;
-                    }
                 }
             }
                 

@@ -9,19 +9,21 @@ using Microsoft.Xna.Framework.Content;
 using Shooter.Bosses.Bullets;
 using Shooter.Engines;
 using Shooter.Engines.Graphical;
+using Shooter.Bosses.BulletPattern;
 
 
 namespace Shooter.Bosses
 {
     public class Boss1 : Boss
     {
-        Random random = new Random();
-        Queue<Rectangle> movingPattern = new Queue<Rectangle>();
+        public Queue<Rectangle> movingPattern = new Queue<Rectangle>();
+
+        BossBulletPattern1 bulletPattern1;
         
-        public Boss1(int bp1, int bp2, int bp3) : base(bp1, bp2, bp3)
+        public Boss1() : base()
         {
             this.health = 1000;
-            this.bulletList = new List<BossBullet>();
+            
             this.texture = null;
             this.position = new Vector2(Globals.WindowWidth / 2, -Globals.WindowHeight); 
 
@@ -30,9 +32,7 @@ namespace Shooter.Bosses
             this.bulletTexture2 = null;
             this.bulletTexture3 = null;
 
-            this.bulletPattern1 = bp1;
-            this.bulletPattern2 = bp3;
-            this.bulletPattern3 = bp2;
+            bulletPattern1 = new BossBulletPattern1(this.health);
 
             this.isVisible = true;
             movingPattern = PatternsBosses.movingPattern(1);
@@ -47,10 +47,6 @@ namespace Shooter.Bosses
         // Draw
         public override void Draw(SpriteBatch spriteBatch)
         {
-           spriteBatch.Draw(texture, position, Color.White);
-           foreach (BossBullet b in bulletList)
-               b.Draw(spriteBatch);
-
            //If Life > 0 than draw life bar
            if (health > 0)
            {
@@ -59,6 +55,9 @@ namespace Shooter.Bosses
                spriteBatch.Draw(healthBottom, new Rectangle(healthRectangle.X, healthRectangle.Y + healthRectangle.Height, healthRectangle.Width, healthBottom.Height), Color.White);
            }
 
+           spriteBatch.Draw(texture, position, Color.White);
+
+           bulletPattern1.Draw(spriteBatch);
         }
 
         // Load Content
@@ -68,11 +67,12 @@ namespace Shooter.Bosses
             bulletTexture1 = content.Load<Texture2D>("Bullets/OrangeBlast"); //Straight
             bulletTexture2 = content.Load<Texture2D>("Bullets/OrangeScale"); //Homing
             bulletTexture3 = content.Load<Texture2D>("Bullets/OrangeTail");  //Spread
-
-
+            
             healthMid = content.Load<Texture2D>("HUD/bar_red_mid");
             healthTop = content.Load<Texture2D>("HUD/bar_red_top");
             healthBottom = content.Load<Texture2D>("HUD/bar_red_bottom");
+
+            bulletPattern1.LoadContent(content);
         }
 
 
@@ -93,6 +93,8 @@ namespace Shooter.Bosses
 
             if (healthAnimation != 0)
                 healthAnimation--;
+
+            bulletPattern1.Update(gameTime, new Vector2(position.X + texture.Width/2 , position.Y + texture.Height/2), this.speed, this.health);
         }
 
         public void Move(GameTime gameTime)
@@ -101,7 +103,7 @@ namespace Shooter.Bosses
             Rectangle tmp;
             double degrees = Graphical.AngleBetween(position, movingPosition);
 
-            Vector2 speed = Graphical.AngleSpeed(degrees, 3);
+            this.speed = Graphical.PolarToCartesian(degrees, 3);
 
             position.Y = position.Y + speed.Y; 
             position.X = position.X + speed.X;
