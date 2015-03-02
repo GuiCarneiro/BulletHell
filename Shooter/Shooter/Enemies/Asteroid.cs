@@ -18,7 +18,8 @@ namespace Shooter
         {
             this.speed = new Vector2(0, 3);
             this.pattern = pattern;
-            this.position = PatternsEnemies.patternPosition(pattern);            
+            this.position = PatternsEnemies.patternPosition(pattern);
+            this.points = 5;
         }
         // Load Content
         public override void LoadContent(ContentManager content)

@@ -20,6 +20,7 @@ namespace Shooter.Enemies
         public int health;
         public int timeOfShoot;
         public double timeCounter;
+        public int points = 0;
         
         //Colision Variables
         public Rectangle boundingBox;

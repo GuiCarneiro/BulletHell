@@ -16,6 +16,7 @@ namespace Shooter.Enemies
         {
             this.pattern = pattern;
             this.position = PatternsEnemies.patternPosition(pattern);
+            this.points = 10;
 
         }
         // Load Content
