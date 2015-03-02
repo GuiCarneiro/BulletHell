@@ -18,11 +18,15 @@ namespace Shooter.Bosses
     {
         public Queue<Rectangle> movingPattern = new Queue<Rectangle>();
 
-        BossBulletPattern1 bulletPattern1;
-        
+        public BossBulletPattern1 bulletPattern1;
+        public BossBulletPattern2 bulletPattern2;
+        public BossBulletPattern3 bulletPattern3;
+        private int triggerLife;
+
         public Boss1() : base()
         {
             this.health = 1000;
+            triggerLife = health;
             
             this.texture = null;
             this.position = new Vector2(Globals.WindowWidth / 2, -Globals.WindowHeight); 
@@ -33,6 +37,8 @@ namespace Shooter.Bosses
             this.bulletTexture3 = null;
 
             bulletPattern1 = new BossBulletPattern1(this.health);
+            bulletPattern2 = new BossBulletPattern2();
+            bulletPattern3 = new BossBulletPattern3();
 
             this.isVisible = true;
             movingPattern = PatternsBosses.movingPattern(1);
@@ -58,6 +64,8 @@ namespace Shooter.Bosses
            spriteBatch.Draw(texture, position, Color.White);
 
            bulletPattern1.Draw(spriteBatch);
+           bulletPattern2.Draw(spriteBatch);
+           bulletPattern3.Draw(spriteBatch);
         }
 
         // Load Content
@@ -73,6 +81,8 @@ namespace Shooter.Bosses
             healthBottom = content.Load<Texture2D>("HUD/bar_red_bottom");
 
             bulletPattern1.LoadContent(content);
+            bulletPattern2.LoadContent(content);
+            bulletPattern3.LoadContent(content);
         }
 
 
@@ -94,25 +104,52 @@ namespace Shooter.Bosses
             if (healthAnimation != 0)
                 healthAnimation--;
 
-            bulletPattern1.Update(gameTime, new Vector2(position.X + texture.Width/2 , position.Y + texture.Height/2), this.speed, this.health);
+            bulletPattern1.Update(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2), this.speed, this.health);
+            bulletPattern2.Update(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2), this.speed);
+            bulletPattern3.Update(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2), this.speed);
+
+            if (health > 750)
+            {
+                bulletPattern1.Shoot(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2));
+            }
+            else if( health < 750 && health > 500 )
+            {
+                bulletPattern2.Shoot(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2));
+            }
+            else
+            {
+                bulletPattern3.Shoot(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2));
+            }
         }
 
         public void Move(GameTime gameTime)
         {
             Rectangle movingPosition = movingPattern.Peek(); 
             Rectangle tmp;
-            double degrees = Graphical.AngleBetween(position, movingPosition);
-
-            this.speed = Graphical.PolarToCartesian(degrees, 3);
-
-            position.Y = position.Y + speed.Y; 
-            position.X = position.X + speed.X;
+            double degrees = Graphical.AngleBetween(position, movingPosition);            
 
             if (movingPosition.Intersects(this.boundingBox))
             {
                 tmp = movingPattern.Dequeue();
                 movingPattern.Enqueue(tmp);
+
+                this.speed = Graphical.PolarToCartesian(degrees, 0);
             }
+            else
+                this.speed = Graphical.PolarToCartesian(degrees, 3);
+
+
+            position.Y = position.Y + speed.Y;
+            position.X = position.X + speed.X;
+
+
+            if (triggerLife > 510 && health < 510)
+                movingPattern = PatternsBosses.movingPattern(7);
+
+            if (triggerLife > 750 && health < 750)
+                movingPattern = PatternsBosses.movingPattern(5);
+
+            triggerLife = health;
         }
     }
 }

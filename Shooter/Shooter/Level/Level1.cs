@@ -13,6 +13,7 @@ using Shooter.Enemies;
 using Shooter.Engines.Particle;
 using Shooter.Bosses;
 using Shooter.Engines.Graphical;
+using Shooter.Bosses.Bullets;
 
 namespace Shooter.Level
 {
@@ -329,6 +330,16 @@ namespace Shooter.Level
                             }
 
                         }
+                    }
+                }
+
+
+                foreach (BossBulletCircular b in boss.bulletPattern1.bulletList)
+                {
+                    if (b.boundingBox.Intersects(p1.boundingBox))
+                    {
+                        b.isVisible = false;
+                        p1.Damaged(b.damage);
                     }
                 }
         }

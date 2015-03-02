@@ -87,6 +87,8 @@
   <ItemGroup>
     <Compile Include="Bosses\Boss1.cs" />
     <Compile Include="Bosses\BulletPattern\BossBulletPattern1.cs" />
+    <Compile Include="Bosses\BulletPattern\BossBulletPattern2.cs" />
+    <Compile Include="Bosses\BulletPattern\BossBulletPattern3.cs" />
     <Compile Include="Bosses\Bullets\BossBulletCircular.cs" />
     <Compile Include="Bosses\Bullets\BossBulletStraight.cs" />
     <Compile Include="Enemies\Asteroid.cs" />

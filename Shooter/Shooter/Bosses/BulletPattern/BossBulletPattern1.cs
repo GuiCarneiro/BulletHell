@@ -9,9 +9,9 @@ using System.Text;
 
 namespace Shooter.Bosses.BulletPattern
 {
-    class BossBulletPattern1
+    public class BossBulletPattern1
     {
-        List<BossBulletCircular> bulletList = new List<BossBulletCircular>(); 
+        public List<BossBulletCircular> bulletList = new List<BossBulletCircular>(); 
         public Queue<int> radiusPattern = new Queue<int>();
 
         public Texture2D bulletTexture;
@@ -60,41 +60,40 @@ namespace Shooter.Bosses.BulletPattern
                     bulletList.RemoveAt(i);
                     i--;
                 }
-            }
-
-            if (shootCounter < 0)
-            {
-                int radius = radiusPattern.Dequeue();
-
-                Shoot(nBossCenter, radius);
-
-                radiusPattern.Enqueue(radius);
-                shootCounter = 2;
-            }
+            }            
 
             if (bossLife > nBossLife)
             {
                 Expand();
                 bossLife = nBossLife;
             }
-
-            shootCounter = shootCounter - gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public void Shoot(Vector2 nBossCenter, int radius)
+        public void Shoot(GameTime gameTime, Vector2 nBossCenter)
         {
             BossBulletCircular newBullet;
 
-            for( int i = 0; i < 361; i = i + 45)
+            if (shootCounter < 0)
             {
-                newBullet = new BossBulletCircular(bulletTexture, i, radius);
+                int radius = radiusPattern.Dequeue();
 
-                newBullet.position = new Vector2(nBossCenter.X - newBullet.texture.Width / 2, nBossCenter.Y - newBullet.texture.Width / 2);
+                for (int i = 0; i < 361; i = i + 30)
+                {
+                    newBullet = new BossBulletCircular(bulletTexture, i, radius);
 
-                newBullet.isVisible = true;
+                    newBullet.position = new Vector2(nBossCenter.X - newBullet.texture.Width / 2, nBossCenter.Y - newBullet.texture.Width / 2);
 
-                bulletList.Add(newBullet);
+                    newBullet.isVisible = true;
+
+                    bulletList.Add(newBullet);
+                }
+
+                radiusPattern.Enqueue(radius);
+                shootCounter = 2;
             }
+
+
+            shootCounter = shootCounter - gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public void Expand()

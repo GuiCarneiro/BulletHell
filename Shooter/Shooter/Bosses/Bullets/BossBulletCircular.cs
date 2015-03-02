@@ -68,7 +68,7 @@ namespace Shooter.Bosses.Bullets
 
             if (!expand)
                 rSpeed = Graphical.PolarToCartesian(degrees, speed);
-
+            
             position.X = position.X + rSpeed.X;
             position.Y = position.Y + rSpeed.Y;
 
@@ -83,6 +83,9 @@ namespace Shooter.Bosses.Bullets
             if (position.X <= 0 - texture.Width - radius) { isVisible = false; }
 
             if (position.X >= Globals.GameWidth + texture.Width + radius) { isVisible = false; }
+
+
+            boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
         public void Expand() { this.expand = true; }
