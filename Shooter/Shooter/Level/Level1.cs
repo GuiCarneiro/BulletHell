@@ -11,6 +11,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Shooter.Enemies;
 using Shooter.Engines.Particle;
+using Shooter.Bosses;
+using Shooter.Engines.Graphical;
+using Shooter.Bosses.Bullets;
 
 namespace Shooter.Level
 {
@@ -21,6 +24,7 @@ namespace Shooter.Level
         List<Bullet> bullets = new List<Bullet>();
         IList<Enemy> enemies = new List<Enemy>();
         StarField starField = new StarField();
+        Boss1 boss = new Boss1();
         double timeInGame = 0;
         ParticleEngine particleEngine;
         HUD hud = new HUD();
@@ -43,9 +47,13 @@ namespace Shooter.Level
 
             p1.Update(gameTime);
 
+            if(boss.isVisible)
+                UpdateBoss(gameTime);
+
             particleEngine.Update();
 
             hud.Update(gameTime);
+
         }
 
         public void LoadContent(ContentManager content)
@@ -61,6 +69,7 @@ namespace Shooter.Level
             hud.LoadContent(content);
 
             p1.LoadContent(content);
+            if (boss.isVisible) boss.LoadContent(content);
 
         }
 
@@ -79,16 +88,23 @@ namespace Shooter.Level
             foreach (Enemy enemy in enemies)
                 enemy.Draw(spriteBatch);
 
+
+            if (boss.isVisible)
+            {
+                boss.Draw(spriteBatch);
+            }
+
             p1.Draw(spriteBatch);
             hud.Draw(spriteBatch);
             particleEngine.Draw(spriteBatch);
+
         }
 
         private void LoadEnemies(GameTime gameTime, ContentManager content)
         {
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-
             // First diagonal asteroids
+
             if (timeInGame > 3 && timeInGame < 5)
             {
                 if (elapsedTime > 0.2)
@@ -120,7 +136,10 @@ namespace Shooter.Level
                 }
             }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> boss
             // First Enemy Wave
             if (timeInGame > 8 && timeInGame < 9)
             {
@@ -214,12 +233,13 @@ namespace Shooter.Level
                     elapsedTime = 0;
                 }
             }
-
             // Second Enemy Wave
             if (timeInGame >20 && timeInGame < 21)
             {
                 hud.warning.Activate();
             }
+
+
         }
 
         // Method responsable for checking any kind of Colision
@@ -287,5 +307,50 @@ namespace Shooter.Level
         }
 
 
+        private void UpdateBoss(GameTime gameTime)
+        {
+            if (timeInGame > 21)
+            {
+                boss.Update(gameTime);
+            }
+                if (boss.boundingBox.Intersects(p1.boundingBox))
+                {
+                    if (Graphical.IntersectsPixelPerPixel(p1.texture, p1.boundingBox, boss.texture, boss.boundingBox))
+                        p1.health = 0;
+                }
+
+                foreach (Bullet b in p1.bulletList)
+                {
+                    if (b.boundingBox.Intersects(boss.boundingBox))
+                    {
+                        if (Graphical.IntersectsPixelPerPixel(b.texture, b.boundingBox, boss.texture, boss.boundingBox))
+                        {
+                            b.isVisible = false;
+                            if (boss.Damaged(b.damage))
+                            {
+                                if (boss.health == 0)
+                                {
+                                    boss.isVisible = false;
+                                    particleEngine.BurstParticle(new Vector2(0, 0), size: 6000, extraTime: 180, intensity: 15);
+                                    particleEngine.BurstParticle(new Vector2(Globals.GameWidth, Globals.GameHeight), size: 6000, extraTime: 180, intensity: -15);
+                                    
+                                    hud.score = hud.score + boss.score;
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+
+                foreach (BossBulletCircular b in boss.bulletPattern1.bulletList)
+                {
+                    if (b.boundingBox.Intersects(p1.boundingBox))
+                    {
+                        b.isVisible = false;
+                        p1.Damaged(b.damage);
+                    }
+                }
+        }
     }
 }

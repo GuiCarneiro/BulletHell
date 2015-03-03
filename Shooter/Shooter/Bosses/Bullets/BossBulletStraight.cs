@@ -7,10 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-namespace Shooter
+namespace Shooter.Bosses.Bullets
 {
-    //Base Class for Bullets
-    public class Bullet
+    public abstract class BossBulletStraight
     {
         public Texture2D texture; // Image
         public Vector2 position;
@@ -22,12 +21,12 @@ namespace Shooter
         public bool isVisible;
 
         // Constructor
-        public Bullet(Texture2D newTexture)
+        public BossBulletStraight(Texture2D newTexture)
         {
-            this.damage = 20;
+            this.damage = 10;
             this.texture = newTexture;
-            this.speed.Y = -20;
-            this.speed.X = 0;
+            this.speed.Y = 8;
+            this.speed.X = 8;
             this.isVisible = false;
 
         }
@@ -47,6 +46,12 @@ namespace Shooter
             boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
             if (position.Y <= 0) { isVisible = false; }
+
+            if (position.Y >= Globals.GameHeight + texture.Height) { isVisible = false; }
+
+            if (position.X <= 0) { isVisible = false; }
+
+            if (position.X >= Globals.GameWidth + texture.Width) { isVisible = false; }
         }
     }
 }

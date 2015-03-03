@@ -85,6 +85,12 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bosses\Boss1.cs" />
+    <Compile Include="Bosses\BulletPattern\BossBulletPattern1.cs" />
+    <Compile Include="Bosses\BulletPattern\BossBulletPattern2.cs" />
+    <Compile Include="Bosses\BulletPattern\BossBulletPattern3.cs" />
+    <Compile Include="Bosses\Bullets\BossBulletCircular.cs" />
+    <Compile Include="Bosses\Bullets\BossBulletStraight.cs" />
     <Compile Include="Enemies\Asteroid.cs" />
     <Compile Include="Bosses\Boss.cs" />
     <Compile Include="Bullet.cs" />
@@ -95,6 +101,8 @@
     <Compile Include="Enemies\EnemyRed1.cs" />
     <Compile Include="Enemies\EnemyRed2.cs" />
     <Compile Include="Enemies\EnemyBullet.cs" />
+    <Compile Include="Engines\Graphical\Graphical.cs" />
+    <Compile Include="Engines\PatternsBosses.cs" />
     <Compile Include="Engines\Input\Input.cs" />
     <Compile Include="Engines\Particle\Particle.cs" />
     <Compile Include="Engines\Particle\ParticleEngine.cs" />

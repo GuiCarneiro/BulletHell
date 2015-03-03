@@ -13,7 +13,7 @@ namespace Shooter.Enemies
     {
         public EnemyBullet(Texture2D newTexture) : base(newTexture)
         {
-            base.speed = 10;
+            base.speed.Y = 10;
             base.damage = 20;
         }
 
@@ -21,7 +21,7 @@ namespace Shooter.Enemies
         public new void Update(GameTime gameTime)
         {
             //Update Position
-            position.Y = position.Y + speed;
+            position.Y = position.Y + speed.Y;
 
             //Update Bounding Box
             boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
