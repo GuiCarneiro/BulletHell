@@ -109,6 +109,7 @@
     <Compile Include="Engines\PatternsEnemies.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="Itens\Itens.cs" />
     <Compile Include="Level\Level1.cs" />
     <Compile Include="Menu\HelpMenu.cs" />
     <Compile Include="Menu\MainMenu.cs" />

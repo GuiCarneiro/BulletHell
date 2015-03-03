@@ -136,10 +136,6 @@ namespace Shooter.Level
                 }
             }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> boss
             // First Enemy Wave
             if (timeInGame > 8 && timeInGame < 9)
             {
@@ -252,8 +248,8 @@ namespace Shooter.Level
                 // Colision between enemy and player
                 if (enemies[i].boundingBox.Intersects(p1.boundingBox))
                 {
-                    enemies[i].isVisible = false;
-                    p1.health = p1.health - 20;
+                    enemies[i].Die();
+                    p1.health = p1.health - enemies[i].health;
                 }
 
                 foreach (Bullet b in p1.bulletList)
@@ -261,16 +257,16 @@ namespace Shooter.Level
                     // Colision between bullet and enemy
                     if (b.boundingBox.Intersects(enemies[i].boundingBox))
                     {
-                        b.isVisible = false;
                         if (enemies[i].Damaged(b.damage))
                         {
-                            enemies[i].isVisible = false;
                             if (enemies[i].health == 0)
                             {
+                                enemies[i].Die();
                                 particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
                                 hud.score = hud.score + enemies[i].points;
                             }
                         }
+                        b.Disappear();
                     }
                 }
 
@@ -279,7 +275,7 @@ namespace Shooter.Level
                     // Colision between enemy's bullet and player
                     if (b.boundingBox.Intersects(p1.boundingBox))
                     {
-                        b.isVisible = false;
+                        b.Disappear();
                         p1.Damaged(b.damage);
                     }
                 }

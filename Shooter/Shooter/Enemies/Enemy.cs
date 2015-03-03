@@ -107,5 +107,16 @@ namespace Shooter.Enemies
             else { return false; }
         }
 
+        public bool Die() 
+        { 
+            Random rand = new Random();
+            this.isVisible = false;
+
+            if(rand.NextDouble() > 0.5)
+                return true;
+            else
+                return false;
+        }
+
     }
 }

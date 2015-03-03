@@ -48,5 +48,7 @@ namespace Shooter
 
             if (position.Y <= 0) { isVisible = false; }
         }
+
+        public void Disappear() { this.isVisible = false; }
     }
 }
