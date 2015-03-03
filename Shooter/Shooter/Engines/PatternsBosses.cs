@@ -49,7 +49,7 @@ namespace Shooter.Engines
                     movingPattern.Enqueue(new Rectangle((int)(Globals.GameWidth * 0.50), (int)(Globals.GameHeight * 0.75), 10, 10));
                     return movingPattern;
                 case (7): // Center
-                    movingPattern.Enqueue(new Rectangle((int)(Globals.GameWidth * 0.35), (int)(Globals.GameHeight * 0.35), 50, 50));
+                    movingPattern.Enqueue(new Rectangle((int)(Globals.GameWidth * 0.50), (int)(Globals.GameHeight * 0.50), 10, 10));
                     return movingPattern;
                 default: // Inverse Triangle
                     movingPattern.Enqueue(new Rectangle((int)(Globals.GameWidth * 0.40), (int)(Globals.GameHeight * 0.25), 10, 10));

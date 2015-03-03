@@ -18,8 +18,7 @@ namespace Shooter.Bosses.BulletPattern
         private double shootCounter1 = 0;
         private double expandCounter = 1;
         private double rotationCounter = 0;
-        private int rotationAngle1 = 0;
-        private int rotationAngle2 = 0;
+        private int rotationAngle = 0;
 
         private int lastShoot = 1;
 
@@ -70,9 +69,9 @@ namespace Shooter.Bosses.BulletPattern
                 switch (lastShoot)
                 {
                     case (1):
-                        for (int i = rotationAngle1; i < 361 + rotationAngle1; i = i + 30)
+                        for (int i = 0; i < 361; i = i + 30)
                         {
-                            newBullet = new BossBulletCircular(bulletTexture, i, 100);
+                            newBullet = new BossBulletCircular(bulletTexture, i + rotationAngle, 100);
 
                             newBullet.position = new Vector2(nBossCenter.X - newBullet.texture.Width / 2, nBossCenter.Y - newBullet.texture.Width / 2);
 
@@ -85,9 +84,9 @@ namespace Shooter.Bosses.BulletPattern
                         break;
 
                     case (2):
-                        for (int i = rotationAngle2; i < 361 + rotationAngle2; i = i + 45)
+                        for (int i = 0; i < 361; i = i + 45)
                         {
-                            newBullet = new BossBulletCircular(bulletTexture2, i, 150, false);
+                            newBullet = new BossBulletCircular(bulletTexture2, i + rotationAngle, 150, false);
 
                             newBullet.position = new Vector2(nBossCenter.X - newBullet.texture.Width / 2, nBossCenter.Y - newBullet.texture.Width / 2);
 
@@ -115,18 +114,10 @@ namespace Shooter.Bosses.BulletPattern
                 expandCounter = 0.1;
             }
 
-            if (expandCounter < 0)
+            if (rotationCounter < 0)
             {
-                rotationAngle1 = rotationAngle1 + 1;
-                rotationAngle2 = rotationAngle2 + 1;
-
-                if (rotationAngle1 > 29)
-                    rotationAngle1 = 0;
-
-                if (rotationAngle2 > 44)
-                    rotationAngle2 = 0;
-
-                rotationCounter = 0.3;
+                rotationAngle = rotationAngle + 1;
+                rotationCounter = 0.1;
             }
 
 
