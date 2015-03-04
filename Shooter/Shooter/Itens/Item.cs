@@ -10,7 +10,7 @@ using Shooter.Engines;
 
 namespace Shooter.Itens
 {
-    public abstract class Itens
+    public abstract class Item
     {
         public Texture2D texture;
         public Vector2 position, speed;
@@ -19,10 +19,11 @@ namespace Shooter.Itens
         public Rectangle boundingBox;
         public bool isVisible;
 
-
-        public void Itens()
+        public Item(Vector2 position)
         {
-            this.speed = new Vector2(0, 2);
+            this.position = position;
+            this.speed = new Vector2(0, 10);
+            this.isVisible = true;
         }
 
         // Draw
@@ -55,6 +56,6 @@ namespace Shooter.Itens
 
         public void Disappear() { this.isVisible = false; }
 
-        public void Effect() { }
+        public virtual void Effect(Player p1) { }
     }
 }

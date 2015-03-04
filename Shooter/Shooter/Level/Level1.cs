@@ -14,20 +14,29 @@ using Shooter.Engines.Particle;
 using Shooter.Bosses;
 using Shooter.Engines.Graphical;
 using Shooter.Bosses.Bullets;
+using Shooter.Itens;
 
 namespace Shooter.Level
 {
     public class Level1
     {
-        Player p1;
-        List<Asteroid> asteroids = new List<Asteroid>();
+        Player p1; // Our ship
+        Boss1 boss = new Boss1(); // First boss
+
+        //Objects used on game
         List<Bullet> bullets = new List<Bullet>();
         IList<Enemy> enemies = new List<Enemy>();
-        StarField starField = new StarField();
-        Boss1 boss = new Boss1();
-        double timeInGame = 0;
+        IList<Item> itens = new List<Item>();
+        // ### //
+
+        StarField starField = new StarField(); // Moving wallpaper
+
+        double timeInGame = 0; // Counter of time after the level1 begins
+
         ParticleEngine particleEngine;
-        HUD hud = new HUD();
+
+        HUD hud = new HUD(); // Head's on Display
+
         private double elapsedTime;
 
         public Level1(Player player)
@@ -42,8 +51,10 @@ namespace Shooter.Level
 
             starField.Update(gameTime);
 
-            UpdateEnemies(gameTime);
+            UpdateEnemies(gameTime, content);
             LoadEnemies(gameTime, content);
+
+            UpdateItens(gameTime);
 
             p1.Update(gameTime);
 
@@ -82,8 +93,9 @@ namespace Shooter.Level
         {
 
             starField.Draw(spriteBatch);
-            foreach (Asteroid asteroid in asteroids)
-                asteroid.Draw(spriteBatch);
+
+            foreach (Item item in itens)
+                item.Draw(spriteBatch);
 
             foreach (Enemy enemy in enemies)
                 enemy.Draw(spriteBatch);
@@ -239,7 +251,7 @@ namespace Shooter.Level
         }
 
         // Method responsable for checking any kind of Colision
-        private void UpdateEnemies(GameTime gameTime)
+        private void UpdateEnemies(GameTime gameTime, ContentManager content)
         {
             for (int i = 0; i < enemies.Count(); i++)
             {
@@ -261,7 +273,12 @@ namespace Shooter.Level
                         {
                             if (enemies[i].health == 0)
                             {
-                                enemies[i].Die();
+                                if (enemies[i].Die())
+                                {
+                                    ItemLife item = new ItemLife(enemies[i].position);
+                                    item.LoadContent(content);
+                                    itens.Add(item);
+                                }
                                 particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
                                 hud.score = hud.score + enemies[i].points;
                             }
@@ -347,6 +364,26 @@ namespace Shooter.Level
                         p1.Damaged(b.damage);
                     }
                 }
+        }
+
+        private void UpdateItens(GameTime gameTime)
+        {
+            for (int i = 0; i < itens.Count; i++)
+            {
+                itens[i].Update(gameTime);
+
+                if (itens[i].boundingBox.Intersects(p1.boundingBox))
+                {
+                    itens[i].Disappear();
+                    itens[i].Effect(p1);
+                }
+
+                if (!itens[i].isVisible)
+                {
+                    itens.RemoveAt(i);
+                    i--;
+                }
+            }
         }
     }
 }
