@@ -408,25 +408,42 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Itens\bolt_gold.png">
-      <Name>bolt_gold</Name>
+    <Compile Include="Itens\powerupBullet.png">
+      <Name>powerupBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Itens\shield_gold.png">
+    <Compile Include="Itens\powerupShield.png">
+      <Name>powerupShield</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Itens\powerupSpecial.png">
+      <Name>powerupSpecial</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Player\shield_gold.png">
       <Name>shield_gold</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Itens\star_gold.png">
-      <Name>star_gold</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Player\shield1.png">
+      <Name>shield1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Itens\things_gold.png">
-      <Name>things_gold</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="kenvector_10px.spritefont">
+      <SubType>Designer</SubType>
+      <Name>kenvector_10px</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

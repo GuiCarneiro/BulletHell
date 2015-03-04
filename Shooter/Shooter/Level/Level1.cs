@@ -275,9 +275,7 @@ namespace Shooter.Level
                             {
                                 if (enemies[i].Die())
                                 {
-                                    ItemLife item = new ItemLife(enemies[i].position);
-                                    item.LoadContent(content);
-                                    itens.Add(item);
+                                    AddItem(content, enemies[i].position);
                                 }
                                 particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
                                 hud.score = hud.score + enemies[i].points;
@@ -329,7 +327,7 @@ namespace Shooter.Level
                 if (boss.boundingBox.Intersects(p1.boundingBox))
                 {
                     if (Graphical.IntersectsPixelPerPixel(p1.texture, p1.boundingBox, boss.texture, boss.boundingBox))
-                        p1.health = 0;
+                        p1.Damaged(boss.health);
                 }
 
                 foreach (Bullet b in p1.bulletList)
@@ -384,6 +382,17 @@ namespace Shooter.Level
                     i--;
                 }
             }
+        }
+
+        private void AddItem(ContentManager content, Vector2 enemyPosition)
+        {
+            Random random = new Random();
+            Item item;
+
+                item = new ItemShield(enemyPosition);
+
+            item.LoadContent(content);
+            itens.Add(item);
         }
     }
 }

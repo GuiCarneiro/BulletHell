@@ -22,7 +22,7 @@ namespace Shooter.Itens
         public Item(Vector2 position)
         {
             this.position = position;
-            this.speed = new Vector2(0, 10);
+            this.speed = new Vector2(0, 5);
             this.isVisible = true;
         }
 
