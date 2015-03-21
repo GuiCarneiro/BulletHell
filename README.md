@@ -12,7 +12,7 @@ gui.carneiro15@gmail.com - Come and talk with us =D
 
 ## Setup
 
-1. _Clone this repo git clone ``` https://github.com/GTi-Jr/Vitrine-de-EJ.git ```_
+1. _Clone this repo git clone ``` https://github.eecs.wsu.edu/CptS323Spring15/Rep_Team7X1.git ```_
 2. _Install XNA4 and Visual Studios_
 3. _Open on your Visual Studios the Shooter.snl_
 4. _Run on Debug Mode_
