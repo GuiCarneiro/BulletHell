@@ -439,9 +439,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="kenvector_10px.spritefont">
-      <SubType>Designer</SubType>
-      <Name>kenvector_10px</Name>
+    <Compile Include="kenvector_11px.spritefont">
+      <Name>kenvector_11px</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>

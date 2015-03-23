@@ -39,6 +39,8 @@ namespace Shooter.Level
 
         private double elapsedTime;
 
+        Random random = new Random();
+
         public Level1(Player player)
         {
             this.p1 = player;
@@ -261,7 +263,7 @@ namespace Shooter.Level
                 if (enemies[i].boundingBox.Intersects(p1.boundingBox))
                 {
                     enemies[i].Die();
-                    p1.health = p1.health - enemies[i].health;
+                    p1.Damaged(enemies[i].health);
                 }
 
                 foreach (Bullet b in p1.bulletList)
@@ -362,6 +364,24 @@ namespace Shooter.Level
                         p1.Damaged(b.damage);
                     }
                 }
+
+                foreach (BossBulletCircular b in boss.bulletPattern2.bulletList)
+                {
+                    if (b.boundingBox.Intersects(p1.boundingBox))
+                    {
+                        b.isVisible = false;
+                        p1.Damaged(b.damage);
+                    }
+                }
+
+                foreach (BossBulletCircular b in boss.bulletPattern3.bulletList)
+                {
+                    if (b.boundingBox.Intersects(p1.boundingBox))
+                    {
+                        b.isVisible = false;
+                        p1.Damaged(b.damage);
+                    }
+                }
         }
 
         private void UpdateItens(GameTime gameTime)
@@ -386,13 +406,26 @@ namespace Shooter.Level
 
         private void AddItem(ContentManager content, Vector2 enemyPosition)
         {
-            Random random = new Random();
-            Item item;
+            double i = random.NextDouble();
+            
 
+
+            if (i > 0.5 && p1.shield < 3)
+            {
+                Item item;
                 item = new ItemShield(enemyPosition);
+                item.LoadContent(content);
+                itens.Add(item);
+            }
 
-            item.LoadContent(content);
-            itens.Add(item);
+            if(i < 0.5 && p1.health < 130)
+            {
+                Item item;
+                item = new ItemLife(enemyPosition);
+                item.LoadContent(content);
+                itens.Add(item);
+            }
+
         }
     }
 }

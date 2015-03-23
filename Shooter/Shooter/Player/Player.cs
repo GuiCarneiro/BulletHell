@@ -45,7 +45,7 @@ namespace Shooter
         // Load Content
         public void LoadContent(ContentManager content)
         {
-            font = content.Load<SpriteFont>("kenvector_10px");
+            font = content.Load<SpriteFont>("kenvector_11px");
             texture = content.Load<Texture2D>("Player/playerShip");
             bulletTexture = content.Load<Texture2D>("Player/laserBlue");
             shieldTexture = content.Load<Texture2D>("Player/shield1");

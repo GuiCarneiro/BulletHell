@@ -93,7 +93,7 @@
     <Compile Include="Bosses\Bullets\BossBulletStraight.cs" />
     <Compile Include="Enemies\Asteroid.cs" />
     <Compile Include="Bosses\Boss.cs" />
-    <Compile Include="Bullet.cs" />
+    <Compile Include="Player\BulletsPatterns\Bullet.cs" />
     <Compile Include="Components\GameButton.cs" />
     <Compile Include="Components\GamePanel.cs" />
     <Compile Include="Components\Warning.cs" />
@@ -117,7 +117,7 @@
     <Compile Include="Menu\HelpMenu.cs" />
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Menu\ScoreMenu.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
