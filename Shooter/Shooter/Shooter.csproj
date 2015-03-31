@@ -93,6 +93,7 @@
     <Compile Include="Bosses\Bullets\BossBulletStraight.cs" />
     <Compile Include="Enemies\Asteroid.cs" />
     <Compile Include="Bosses\Boss.cs" />
+    <Compile Include="Factories\BulletFactory.cs" />
     <Compile Include="Player\BulletsPatterns\Bullet.cs" />
     <Compile Include="Components\GameButton.cs" />
     <Compile Include="Components\GamePanel.cs" />

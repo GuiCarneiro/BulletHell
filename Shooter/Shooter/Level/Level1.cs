@@ -15,6 +15,7 @@ using Shooter.Bosses;
 using Shooter.Engines.Graphical;
 using Shooter.Bosses.Bullets;
 using Shooter.Itens;
+using Shooter.Factories;
 
 namespace Shooter.Level
 {
@@ -24,7 +25,7 @@ namespace Shooter.Level
         Boss1 boss = new Boss1(); // First boss
 
         //Objects used on game
-        List<Bullet> bullets = new List<Bullet>();
+        BulletFactory bulletFactory = new BulletFactory();
         IList<Enemy> enemies = new List<Enemy>();
         IList<Item> itens = new List<Item>();
         // ### //
@@ -55,6 +56,7 @@ namespace Shooter.Level
 
             UpdateEnemies(gameTime, content);
             LoadEnemies(gameTime, content);
+            bulletFactory.Update(gameTime, p1);
 
             UpdateItens(gameTime);
 
@@ -79,6 +81,8 @@ namespace Shooter.Level
 
             starField.LoadContent(content);
 
+            bulletFactory.LoadContent(content);
+
             hud.LoadContent(content);
 
             p1.LoadContent(content);
@@ -101,6 +105,8 @@ namespace Shooter.Level
 
             foreach (Enemy enemy in enemies)
                 enemy.Draw(spriteBatch);
+
+            bulletFactory.Draw(spriteBatch);
 
 
             if (boss.isVisible)
@@ -169,10 +175,7 @@ namespace Shooter.Level
 
             if (timeInGame > 9 && timeInGame < 10)
             {
-                foreach (Enemy enemy in enemies)
-                {
-                    enemy.Shoot();
-                }
+                bulletFactory.Shoot(enemies);
             }
             
             // Second Enemy Wave
@@ -194,10 +197,7 @@ namespace Shooter.Level
 
             if (timeInGame > 11 && timeInGame < 12)
             {
-                foreach (Enemy enemy in enemies)
-                {
-                    enemy.Shoot();
-                }
+                bulletFactory.Shoot(enemies);
             }
 
             // Second Enemy Wave
@@ -220,10 +220,7 @@ namespace Shooter.Level
 
             if (timeInGame > 12 && timeInGame < 13)
             {
-                foreach (Enemy enemy in enemies)
-                {
-                    enemy.Shoot();
-                }
+                bulletFactory.Shoot(enemies);
             }
 
 
@@ -287,34 +284,10 @@ namespace Shooter.Level
                     }
                 }
 
-                foreach (Bullet b in enemies[i].bulletList)
-                {
-                    // Colision between enemy's bullet and player
-                    if (b.boundingBox.Intersects(p1.boundingBox))
-                    {
-                        b.Disappear();
-                        p1.Damaged(b.damage);
-                    }
-                }
-
                 // Delete any invisible enemy
                 if (!enemies[i].isVisible)
                 {
-                    List<EnemyBullet> bullets = null;
-                    if (enemies[i].bulletList.Count() > 0 && enemies.Count() > 1)
-                    {
-                        bullets = enemies[i].bulletList;
-                    }
-
                     enemies.RemoveAt(i);
-
-                    // Transfer bullets from a dead enemy to another
-                    // This way we don't have bullet disapearing just because one enemy is dead
-                    if (bullets != null)
-                    {
-                        foreach (EnemyBullet b in bullets) { enemies[0].bulletList.Add(b); }
-                    }
-                    i--;
                 }
             }
         }

@@ -76,7 +76,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="laserRed.png">
+    <Compile Include="Enemies\laserRed.png">
       <Name>laserRed</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
