@@ -26,7 +26,7 @@ namespace Shooter.Level
 
         //Objects used on game
         BulletFactory bulletFactory = new BulletFactory();
-        IList<Enemy> enemies = new List<Enemy>();
+        EnemyFactory enemyFactory = new EnemyFactory();
         IList<Item> itens = new List<Item>();
         // ### //
 
@@ -34,11 +34,11 @@ namespace Shooter.Level
 
         double timeInGame = 0; // Counter of time after the level1 begins
 
+        private double elapsedTime = 0;
+
         ParticleEngine particleEngine;
 
         HUD hud = new HUD(); // Head's on Display
-
-        private double elapsedTime;
 
         Random random = new Random();
 
@@ -54,8 +54,9 @@ namespace Shooter.Level
 
             starField.Update(gameTime);
 
-            UpdateEnemies(gameTime, content);
             LoadEnemies(gameTime, content);
+            enemyFactory.Update(gameTime, content, p1, hud, particleEngine);
+
             bulletFactory.Update(gameTime, p1);
 
             UpdateItens(gameTime);
@@ -103,9 +104,7 @@ namespace Shooter.Level
             foreach (Item item in itens)
                 item.Draw(spriteBatch);
 
-            foreach (Enemy enemy in enemies)
-                enemy.Draw(spriteBatch);
-
+            enemyFactory.Draw(spriteBatch);
             bulletFactory.Draw(spriteBatch);
 
 
@@ -123,175 +122,79 @@ namespace Shooter.Level
         private void LoadEnemies(GameTime gameTime, ContentManager content)
         {
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-            // First diagonal asteroids
 
-            if (timeInGame > 3 && timeInGame < 5)
+            // First Wave - Asteroids
+            if (timeInGame > 3 && timeInGame < 5 && elapsedTime > 0.2)
             {
-                if (elapsedTime > 0.2)
-                {
-                    Asteroid asteroid = new Asteroid(1);
-                    asteroid.LoadContent(content);
-                    enemies.Add(asteroid);
-
-                    asteroid = new Asteroid(2);
-                    asteroid.LoadContent(content);
-                    enemies.Add(asteroid);
-                    elapsedTime = 0;
-                }
+                enemyFactory.CreateEnemy(0, 1, content);
+                enemyFactory.CreateEnemy(0, 2, content);
+                elapsedTime = 0;
             }
 
-            // First diagonal asteroids
-            if (timeInGame > 5 && timeInGame < 7)
+            // Second Wave - Asteroids
+            if (timeInGame > 5 && timeInGame < 7 && elapsedTime > 0.2)
             {
-                if (elapsedTime > 0.2)
-                {
-                    Asteroid asteroid = new Asteroid(3);
-                    asteroid.LoadContent(content);
-                    enemies.Add(asteroid);
-
-                    asteroid = new Asteroid(4);
-                    asteroid.LoadContent(content);
-                    enemies.Add(asteroid);
-                    elapsedTime = 0;
-                }
+                enemyFactory.CreateEnemy(0, 3, content);
+                enemyFactory.CreateEnemy(0, 4, content);
+                elapsedTime = 0;
             }
 
-            // First Enemy Wave
-            if (timeInGame > 8 && timeInGame < 9)
+            // Third Wave - EnemyRed1
+            if (timeInGame > 8 && timeInGame < 9 && elapsedTime > 0.2)
             {
-                if (elapsedTime > 0.2)
-                {
-                   EnemyRed1 e = new EnemyRed1(1);
-                   e.LoadContent(content);
-                   enemies.Add(e);
-
-
-                   e = new EnemyRed1(2);
-                   e.LoadContent(content);
-                   enemies.Add(e);
-                   elapsedTime = 0;
-                }
+                enemyFactory.CreateEnemy(1, 1, content);
+                enemyFactory.CreateEnemy(1, 2, content);
+                elapsedTime = 0;
             }
 
+            // First Bullet Wave
             if (timeInGame > 9 && timeInGame < 10)
             {
-                bulletFactory.Shoot(enemies);
+                bulletFactory.Shoot(enemyFactory.enemies);
             }
-            
-            // Second Enemy Wave
-            if (timeInGame > 10 && timeInGame < 11)
+
+            // Forth Wave - EnemyRed1
+            if (timeInGame > 10 && timeInGame < 11 && elapsedTime > 0.2)
             {
-                if (elapsedTime > 0.2)
-                {
-                   EnemyRed1 e = new EnemyRed1(3);
-                   e.LoadContent(content);
-                   enemies.Add(e);
-
-                   e = new EnemyRed1(4);
-                   e.LoadContent(content);
-                   enemies.Add(e);
-
-                    elapsedTime = 0;
-                }
+                enemyFactory.CreateEnemy(1, 3, content);
+                enemyFactory.CreateEnemy(1, 4, content);
+                elapsedTime = 0;
             }
 
+            // Second Bullet Wave
             if (timeInGame > 11 && timeInGame < 12)
             {
-                bulletFactory.Shoot(enemies);
+                bulletFactory.Shoot(enemyFactory.enemies);
             }
 
-            // Second Enemy Wave
-            if (timeInGame > 12 && timeInGame < 14)
+            // Fifth Wave - EnemyRed2
+            if (timeInGame > 12 && timeInGame < 14 && elapsedTime > 0.2)
             {
-                if (elapsedTime > 0.2)
-                {
-                    EnemyRed2 e = new EnemyRed2(5);
-                    e.LoadContent(content);
-                    enemies.Add(e);
-
-                    
-                    e = new EnemyRed2(6);
-                    e.LoadContent(content);
-                    enemies.Add(e);
-
-                    elapsedTime = 0;
-                }
+                enemyFactory.CreateEnemy(2, 5, content);
+                enemyFactory.CreateEnemy(2, 6, content);
+                elapsedTime = 0;
             }
 
+            // Third Bullet Wave
             if (timeInGame > 12 && timeInGame < 13)
             {
-                bulletFactory.Shoot(enemies);
+                bulletFactory.Shoot(enemyFactory.enemies);
             }
 
-
-            // Second Enemy Wave
-            if (timeInGame > 13 && timeInGame < 18)
+            // Sixth Wave - EnemyRed2
+            if (timeInGame > 13 && timeInGame < 18 && elapsedTime > 0.2)
             {
-                if (elapsedTime > 0.2)
-                {
-                    EnemyRed2 e = new EnemyRed2(7);
-                    e.LoadContent(content);
-                    enemies.Add(e); 
-                    
-                    e = new EnemyRed2(8);
-                    e.LoadContent(content);
-                    enemies.Add(e);
-
-                    elapsedTime = 0;
-                }
+                enemyFactory.CreateEnemy(2, 7, content);
+                enemyFactory.CreateEnemy(2, 8, content);
+                elapsedTime = 0;
             }
-            // Second Enemy Wave
+
             if (timeInGame >20 && timeInGame < 21)
             {
                 hud.warning.Activate();
             }
-
-
         }
-
-        // Method responsable for checking any kind of Colision
-        private void UpdateEnemies(GameTime gameTime, ContentManager content)
-        {
-            for (int i = 0; i < enemies.Count(); i++)
-            {
-                enemies[i].Update(gameTime);
-                
-                // Colision between enemy and player
-                if (enemies[i].boundingBox.Intersects(p1.boundingBox))
-                {
-                    enemies[i].Die();
-                    p1.Damaged(enemies[i].health);
-                }
-
-                foreach (Bullet b in p1.bulletList)
-                {
-                    // Colision between bullet and enemy
-                    if (b.boundingBox.Intersects(enemies[i].boundingBox))
-                    {
-                        if (enemies[i].Damaged(b.damage))
-                        {
-                            if (enemies[i].health == 0)
-                            {
-                                if (enemies[i].Die())
-                                {
-                                    AddItem(content, enemies[i].position);
-                                }
-                                particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
-                                hud.score = hud.score + enemies[i].points;
-                            }
-                        }
-                        b.Disappear();
-                    }
-                }
-
-                // Delete any invisible enemy
-                if (!enemies[i].isVisible)
-                {
-                    enemies.RemoveAt(i);
-                }
-            }
-        }
-
+        
 
         private void UpdateBoss(GameTime gameTime)
         {
