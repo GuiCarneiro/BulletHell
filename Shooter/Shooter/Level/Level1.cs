@@ -27,7 +27,7 @@ namespace Shooter.Level
         //Objects used on game
         BulletFactory bulletFactory = new BulletFactory();
         EnemyFactory enemyFactory = new EnemyFactory();
-        IList<Item> itens = new List<Item>();
+        ItemFactory itemFactory = new ItemFactory();
         // ### //
 
         StarField starField = new StarField(); // Moving wallpaper
@@ -55,11 +55,12 @@ namespace Shooter.Level
             starField.Update(gameTime);
 
             LoadEnemies(gameTime, content);
-            enemyFactory.Update(gameTime, content, p1, hud, particleEngine);
+
+            enemyFactory.Update(gameTime, content, p1, hud, particleEngine, itemFactory);
 
             bulletFactory.Update(gameTime, p1);
 
-            UpdateItens(gameTime);
+            itemFactory.Update(gameTime, p1);
 
             p1.Update(gameTime);
 
@@ -101,8 +102,7 @@ namespace Shooter.Level
 
             starField.Draw(spriteBatch);
 
-            foreach (Item item in itens)
-                item.Draw(spriteBatch);
+            itemFactory.Draw(spriteBatch);
 
             enemyFactory.Draw(spriteBatch);
             bulletFactory.Draw(spriteBatch);
@@ -258,50 +258,6 @@ namespace Shooter.Level
                         p1.Damaged(b.damage);
                     }
                 }
-        }
-
-        private void UpdateItens(GameTime gameTime)
-        {
-            for (int i = 0; i < itens.Count; i++)
-            {
-                itens[i].Update(gameTime);
-
-                if (itens[i].boundingBox.Intersects(p1.boundingBox))
-                {
-                    itens[i].Disappear();
-                    itens[i].Effect(p1);
-                }
-
-                if (!itens[i].isVisible)
-                {
-                    itens.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-
-        private void AddItem(ContentManager content, Vector2 enemyPosition)
-        {
-            double i = random.NextDouble();
-            
-
-
-            if (i > 0.5 && p1.shield < 3)
-            {
-                Item item;
-                item = new ItemShield(enemyPosition);
-                item.LoadContent(content);
-                itens.Add(item);
-            }
-
-            if(i < 0.5 && p1.health < 130)
-            {
-                Item item;
-                item = new ItemLife(enemyPosition);
-                item.LoadContent(content);
-                itens.Add(item);
-            }
-
         }
     }
 }

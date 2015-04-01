@@ -25,7 +25,7 @@ namespace Shooter.Factories
                 enemy.Draw(spriteBatch);        
         }
 
-        public void Update(GameTime gameTime, ContentManager content, Player p1, HUD hud, ParticleEngine particleEngine)
+        public void Update(GameTime gameTime, ContentManager content, Player p1, HUD hud, ParticleEngine particleEngine, ItemFactory itemFactory)
         {
 
             for (int i = 0; i < enemies.Count(); i++)
@@ -50,7 +50,7 @@ namespace Shooter.Factories
                             {
                                 if (enemies[i].Die())
                                 {
-                                    //AddItem(content, enemies[i].position);
+                                    itemFactory.CreateItem(content, enemies[i].position, p1);
                                 }
                                 particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
                                 hud.score = hud.score + enemies[i].points;
