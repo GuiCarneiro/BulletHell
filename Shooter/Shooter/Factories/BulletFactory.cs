@@ -44,7 +44,7 @@ namespace Shooter.Factories
 
         public void Shoot(IList<Enemy> enemies)
         {
-            if(bullets.Count < 20)
+            if(bullets.Count < enemies.Count)
                 foreach (Enemy e in enemies)
                 {
                     EnemyBullet newBullet = new EnemyBullet(texture);
