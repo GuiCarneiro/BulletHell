@@ -40,7 +40,7 @@ namespace Shooter
             if (position.X < 0 - texture.Width) { isVisible = false; }
         }
 
-        public new void Shoot() { }
+        public void Shoot() { }
        
     }
 }

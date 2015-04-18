@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Shooter.Enemies;
+using Shooter.Engines.Graphical;
 using Shooter.Engines.Particle;
 using System;
 using System.Collections.Generic;
@@ -39,24 +40,29 @@ namespace Shooter.Factories
                     p1.Damaged(enemies[i].health);
                 }
 
-                foreach (Bullet b in p1.bulletList)
+                foreach (Bullet b in p1.bulletsFactory.bullets)
                 {
                     // Colision between bullet and enemy
                     if (b.boundingBox.Intersects(enemies[i].boundingBox))
                     {
-                        if (enemies[i].Damaged(b.damage))
+                        if (Graphical.IntersectsPixelPerPixel(b.texture, b.boundingBox, enemies[i].texture, enemies[i].boundingBox))
                         {
-                            if (enemies[i].health == 0)
+                            if (enemies[i].Damaged(b.damage))
                             {
-                                if (enemies[i].Die())
+                                if (enemies[i].health <= 0)
                                 {
-                                    itemFactory.CreateItem(content, enemies[i].position, p1);
+                                    if (enemies[i].Die())
+                                    {
+                                        itemFactory.CreateItem(content, enemies[i].position, p1);
+                                    }
+                                    particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
+                                    hud.score = hud.score + enemies[i].points;
+                                    p1.addPoints(enemies[i].points);
                                 }
-                                particleEngine.BurstParticle(new Vector2(enemies[i].position.X, enemies[i].position.Y), extraTime: 60, variationY: -1);
-                                hud.score = hud.score + enemies[i].points;
                             }
+                            b.Disappear();
+
                         }
-                        b.Disappear();
                     }
                 }
 

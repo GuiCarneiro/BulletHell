@@ -28,7 +28,7 @@ namespace Shooter.Enemies
         // Constructor
         public Enemy()
         {
-            this.health = 20;
+            this.health = 4;
             this.texture = null;
             this.bulletTexture = null;
             this.speed.Y = 4; 

@@ -16,18 +16,20 @@ using Shooter.Engines.Graphical;
 using Shooter.Bosses.Bullets;
 using Shooter.Itens;
 using Shooter.Factories;
+using Shooter.Components;
 
 namespace Shooter.Level
 {
     public class Level1
     {
         Player p1; // Our ship
-        Boss1 boss = new Boss1(); // First boss
+        Boss1 boss; // First boss
 
         //Objects used on game
         BulletFactory bulletFactory = new BulletFactory();
         EnemyFactory enemyFactory = new EnemyFactory();
         ItemFactory itemFactory = new ItemFactory();
+        Camera camera;
         // ### //
 
         StarField starField = new StarField(); // Moving wallpaper
@@ -42,13 +44,30 @@ namespace Shooter.Level
 
         Random random = new Random();
 
-        public Level1(Player player)
+        private SoundEffect inGame;
+        private SoundEffectInstance instance;
+
+        public Level1(Player player, ref Camera camera)
         {
             this.p1 = player;
+            this.camera = camera;
+            this.boss = new Boss1(ref camera);
+        }
+
+        public void levelBegin()
+        {
+            if (timeInGame == 0)
+            {
+                instance.IsLooped = true;
+                instance.Volume = 0.05f;
+                instance.Play();
+            }
         }
 
         public void Update(GameTime gameTime, ContentManager content)
         {
+            levelBegin();
+
             KeyboardState keyState = Keyboard.GetState();
             timeInGame = timeInGame += gameTime.ElapsedGameTime.TotalSeconds; 
 
@@ -81,6 +100,9 @@ namespace Shooter.Level
 
             particleEngine = new ParticleEngine(textures);
 
+            inGame = content.Load<SoundEffect>("Sound/InGame");
+            instance = inGame.CreateInstance();
+
             starField.LoadContent(content);
 
             bulletFactory.LoadContent(content);
@@ -107,15 +129,18 @@ namespace Shooter.Level
             enemyFactory.Draw(spriteBatch);
             bulletFactory.Draw(spriteBatch);
 
+            p1.Draw(spriteBatch);
 
             if (boss.isVisible)
             {
                 boss.Draw(spriteBatch);
             }
 
-            p1.Draw(spriteBatch);
             hud.Draw(spriteBatch);
             particleEngine.Draw(spriteBatch);
+
+
+            
 
         }
 
@@ -208,7 +233,7 @@ namespace Shooter.Level
                         p1.Damaged(boss.health);
                 }
 
-                foreach (Bullet b in p1.bulletList)
+                foreach (Bullet b in p1.bulletsFactory.bullets)
                 {
                     if (b.boundingBox.Intersects(boss.boundingBox))
                     {
@@ -224,6 +249,7 @@ namespace Shooter.Level
                                     particleEngine.BurstParticle(new Vector2(Globals.GameWidth, Globals.GameHeight), size: 6000, extraTime: 180, intensity: -15);
                                     
                                     hud.score = hud.score + boss.score;
+                                    p1.addPoints(boss.score);
                                 }
                             }
 

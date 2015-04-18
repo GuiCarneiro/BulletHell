@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Shooter.Engines.Input;
+using Shooter.Factories;
 
 namespace Shooter
 {
@@ -19,10 +20,11 @@ namespace Shooter
         public Vector2 position;
         public float speed, bulletDelay; // Bullet delay between each bullet fired
         public int width = 50, height = 50;
-        public List<Bullet> bulletList; // List of player bullets on screen
+        public PlayerBulletFactory bulletsFactory = new PlayerBulletFactory();
         public int health;
         public Input input; // Kayboard or Gamepad Input
         public int shield;
+        public int points;
 
         Rectangle healthRectangle; // Area of Health Bar
 
@@ -34,7 +36,6 @@ namespace Shooter
         {
             this.health = 150;
             this.bulletDelay = 8;
-            this.bulletList = new List<Bullet>();
             this.texture = null;
             this.position = new Vector2(300, 300);
             this.speed = 5;
@@ -53,6 +54,7 @@ namespace Shooter
             healthTexture = content.Load<Texture2D>("HUD/blueHorizontal");
             healthLeft = content.Load<Texture2D>("HUD/blue_left");
             healthRight = content.Load<Texture2D>("HUD/blue_right");
+            bulletsFactory.LoadContent(content);
         }
 
         // Draw
@@ -75,8 +77,7 @@ namespace Shooter
             }
 
 
-            foreach (Bullet b in bulletList)
-                b.Draw(spriteBatch);
+            bulletsFactory.Draw(spriteBatch);
         }
 
         // Update 
@@ -114,34 +115,12 @@ namespace Shooter
             //Bounding Box
             boundingBox = new Rectangle((int)position.X, (int)position.Y, width, height);
 
-            for (int i = 0; i < bulletList.Count(); i++)
-            {
-                bulletList[i].Update(gameTime);
-                if (!bulletList[i].isVisible)
-                {
-                    bulletList.RemoveAt(i);
-                    i--;
-                }
-            }
-                
+            bulletsFactory.Update(gameTime, this);                
         }
 
         public void Shoot()
         {
-
-            if (bulletDelay > 0) { bulletDelay--; }
-
-            if (bulletDelay <= 0)
-            {
-                Bullet newBullet = new Bullet(bulletTexture);
-                newBullet.position = new Vector2(position.X + width / 2 - newBullet.texture.Width/2, position.Y - height / 2);
-
-                newBullet.isVisible = true;
-
-                bulletList.Add(newBullet);
-            }
-
-            if (bulletDelay == 0) { bulletDelay = 8; }
+            bulletsFactory.Shoot(this);
         }
 
         public bool Damaged(int damage)
@@ -156,5 +135,11 @@ namespace Shooter
             else
                 return false;
         }
+
+        public void addPoints(int points)
+        {
+            this.points = this.points + points;
+        }
+            
     }
 }

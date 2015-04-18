@@ -24,9 +24,9 @@ namespace Shooter
         // Constructor
         public Bullet(Texture2D newTexture)
         {
-            this.damage = 20;
+            this.damage = 8;
             this.texture = newTexture;
-            this.speed.Y = -20;
+            this.speed.Y = -15;
             this.speed.X = 0;
             this.isVisible = false;
 

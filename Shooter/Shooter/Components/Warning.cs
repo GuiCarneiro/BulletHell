@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,6 +18,9 @@ namespace Shooter.Components
         private bool alphaChange = true;
         private double timeActivated = 0;
 
+        private SoundEffect warning;
+        private SoundEffectInstance instance;
+
         public Warning()
         {
             this.position = new Vector2(Globals.GameWidth, Globals.GameHeight/2);
@@ -27,6 +31,8 @@ namespace Shooter.Components
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("HUD/warning");
+            warning = content.Load<SoundEffect>("Sound/BossAppear");
+            instance = warning.CreateInstance();
         }
 
         // Draw
@@ -71,6 +77,11 @@ namespace Shooter.Components
         public void Activate()
         {
             this.isActivated = "center";
+
+            if (instance.State != SoundState.Playing)
+            {
+                instance.Play();
+            }
         }
     }
 }

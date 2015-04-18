@@ -12,6 +12,7 @@ using Shooter.Enemies;
 using Shooter.Engines.Particle;
 using Shooter.Level;
 using Shooter.Menu;
+using Shooter.Components;
 
 namespace Shooter
 {
@@ -27,6 +28,7 @@ namespace Shooter
         Level1 level1;
         MainMenu mainMenu;
         HelpMenu helpMenu;
+        public Camera camera;
 
         // Game Actual Screen
         int currentGameState = 0;
@@ -45,8 +47,9 @@ namespace Shooter
             //Content Directory
             Content.RootDirectory = "Content";
 
-
-            level1 = new Level1(p1);
+            
+            camera = new Camera();
+            level1 = new Level1(p1, ref camera);
             mainMenu = new MainMenu();
             helpMenu = new HelpMenu();       
         }
@@ -60,13 +63,14 @@ namespace Shooter
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);  
+            spriteBatch = new SpriteBatch(GraphicsDevice);
           
             //Load Subcontent
             mainMenu.LoadContent(Content);
             helpMenu.LoadContent(Content);    
             level1.LoadContent(Content);
-            
+
+            camera.setGraphics(graphics.GraphicsDevice.Viewport);
         }
 
         protected override void UnloadContent()
@@ -100,7 +104,7 @@ namespace Shooter
                     break;
             }
 
-
+            camera.Update();
             base.Update(gameTime);
         }
 
@@ -111,7 +115,7 @@ namespace Shooter
             GraphicsDevice.Clear(new Color(2, 36, 79));
 
             //Begin Drawing
-            spriteBatch.Begin();
+            spriteBatch.Begin( SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
 
             switch (currentGameState)
             {
