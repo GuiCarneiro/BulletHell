@@ -23,7 +23,6 @@ namespace Shooter.Enemies
         public override void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("Enemies/enemyRed2");
-            bulletTexture = content.Load<Texture2D>("laserRed");
         }        
     }
 }

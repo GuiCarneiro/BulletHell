@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,11 +11,12 @@ namespace Shooter.Components
 {
     class GameButton
     {
-        public Texture2D texture, texturePressed;
+        public Texture2D texture;
         public Vector2 position, size;
         public bool isSelected;
         public SpriteFont font;
         public String text;
+        private SoundEffect selected;
         public int gameState;
 
         public GameButton(Vector2 position, Vector2 size, String text, int gameState)
@@ -29,8 +31,10 @@ namespace Shooter.Components
         // Load Content
         public void LoadContent(ContentManager content)
         {
+
             font = content.Load<SpriteFont>("kenvector");
             texture = content.Load<Texture2D>("button");
+            selected = content.Load<SoundEffect>("Sound/switch");
         }
 
         // Draw
@@ -54,6 +58,7 @@ namespace Shooter.Components
         public void Select()
         {
             this.isSelected = true;
+            selected.Play();
         }
 
         public void UnSelect()

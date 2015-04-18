@@ -10,6 +10,7 @@ using Shooter.Bosses.Bullets;
 using Shooter.Engines;
 using Shooter.Engines.Graphical;
 using Shooter.Bosses.BulletPattern;
+using Shooter.Components;
 
 
 namespace Shooter.Bosses
@@ -17,13 +18,13 @@ namespace Shooter.Bosses
     public class Boss1 : Boss
     {
         public Queue<Rectangle> movingPattern = new Queue<Rectangle>();
-
         public BossBulletPattern1 bulletPattern1;
         public BossBulletPattern2 bulletPattern2;
         public BossBulletPattern3 bulletPattern3;
+        private UpsideDownEffect upsidedown;
         private int triggerLife;
 
-        public Boss1() : base()
+        public Boss1(ref Camera camera) : base()
         {
             this.health = 1000;
             triggerLife = health;
@@ -48,6 +49,7 @@ namespace Shooter.Bosses
             this.initialLife = 2000;
             this.initialHeight = 1300;
             this.healthAnimation = 270;
+            this.upsidedown = new UpsideDownEffect(ref camera);
         }
 
         // Draw
@@ -66,6 +68,9 @@ namespace Shooter.Bosses
            bulletPattern1.Draw(spriteBatch);
            bulletPattern2.Draw(spriteBatch);
            bulletPattern3.Draw(spriteBatch);
+
+           if (upsidedown.alive && upsidedown.active)
+            upsidedown.Draw(spriteBatch);
         }
 
         // Load Content
@@ -83,6 +88,9 @@ namespace Shooter.Bosses
             bulletPattern1.LoadContent(content);
             bulletPattern2.LoadContent(content);
             bulletPattern3.LoadContent(content);
+
+
+            upsidedown.LoadContent(content);
         }
 
 
@@ -120,6 +128,9 @@ namespace Shooter.Bosses
             {
                 bulletPattern3.Shoot(gameTime, new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2));
             }
+
+            if (upsidedown.alive && upsidedown.active)
+                upsidedown.Update(gameTime);
         }
 
         public void Move(GameTime gameTime)
@@ -147,7 +158,10 @@ namespace Shooter.Bosses
                 movingPattern = PatternsBosses.movingPattern(7);
 
             if (triggerLife > 750 && health < 750)
+            {
                 movingPattern = PatternsBosses.movingPattern(5);
+                upsidedown.Begin();
+            }
 
             triggerLife = health;
         }

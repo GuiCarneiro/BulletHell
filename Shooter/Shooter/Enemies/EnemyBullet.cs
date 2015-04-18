@@ -27,6 +27,8 @@ namespace Shooter.Enemies
             boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
             if (position.Y <= 0) { isVisible = false; }
+
+            if (position.Y >= Globals.GameHeight + this.texture.Height) { isVisible = false; }
         }
     }
 }
